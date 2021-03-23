@@ -2,7 +2,7 @@
         register(options: {
           firstName: $firstName, 
           lastName: $lastName
-            email: $email,
+          email: $email,
           password: $password,
             }){
              errors{

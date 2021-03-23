@@ -3,36 +3,19 @@ import { Formik, Form, Field } from 'formik';
 import { Box, Button } from '@material-ui/core';
 import { TextField } from 'formik-material-ui';
 import { useMutation } from 'urql';
+import { useRegisterMutation } from '../../generated/graphql';
+import { toErrorMap } from '../../utils/toErrorMap';
+import { useRouter } from 'next/router';
 
 interface registerProps {
 
 }
 
-const REGISTER_MUT = `
-    mutation Register($firstName: String!, $lastName: String!, $email: String!, $password: String!){
-        register(options: {
-        firstName: $firstName, 
-        lastName: $lastName
-            email: $email,
-        password: $password,
-            }){
-            errors{
-            message
-            field
-        }
-        user {
-            firstName
-            lastName
-            email
-            _id
-        }
-        }
-    }
-`
+
 
 const Register: React.FC<registerProps> = ({ }) => {
-    const [, register] = useMutation(REGISTER_MUT);
-
+    const [, register] = useRegisterMutation();
+    const router = useRouter()
     return (
         <Box
             height="100vh"
@@ -47,13 +30,15 @@ const Register: React.FC<registerProps> = ({ }) => {
                     email: '',
                     password: ''
                 }}
-                onSubmit={(values) => {
-                    console.log(values);
-                    return register(values);
-                    // const response = await register(values);
-                    // if(response.data?.register.errors){
-                    //     setErrors(toErrorMap(response.data.register.errors));
-                    // } else if(response)
+                onSubmit={async (values, { setErrors }) => {
+                    const response = await register(values);
+                    console.log(response);
+                    if(response.data?.register.errors) {
+                        setErrors(toErrorMap(response.data.register.errors));
+                    } else if (response.data?.register.user) {
+                        // register worked:
+                        router.push("/")
+                    }
 
                     
                 }}>
