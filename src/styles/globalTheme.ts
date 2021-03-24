@@ -1,5 +1,5 @@
 import { createMuiTheme } from "@material-ui/core";
-import { teal, grey } from "@material-ui/core/colors";
+import { teal, grey, orange } from "@material-ui/core/colors";
 
 export const theme = createMuiTheme({
   palette: {
@@ -11,6 +11,9 @@ export const theme = createMuiTheme({
     secondary: {
       main: grey[700],
       contrastText: '#FFFFFF'
+    },
+    error: {
+      main: orange[700]
     }
   },
   typography: {
