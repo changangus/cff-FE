@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { useStyles } from './Navbar.styles';
+import { useStyles } from '../styles/Navbar.styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -15,9 +15,9 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
-import LoginDialog from '../Login/LoginDialog';
+import LoginDialog from './LoginDialog';
 import { useRouter } from 'next/router';
-import { useMeQuery } from '../../generated/graphql';
+import { useMeQuery } from '../generated/graphql';
 import { Box } from '@material-ui/core';
 
 export default function Navbar() {
@@ -161,7 +161,7 @@ export default function Navbar() {
             onClick={() => {
               router.push('/')
             }}>
-            Material-UI
+            Fridge Finder
           </Typography>
           <div className={classes.search}>
             <div className={classes.searchIcon}>

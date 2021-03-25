@@ -1,5 +1,5 @@
 import { createMuiTheme } from "@material-ui/core";
-import { teal, grey, orange } from "@material-ui/core/colors";
+import { grey, orange } from "@material-ui/core/colors";
 
 export const theme = createMuiTheme({
   palette: {
@@ -19,11 +19,34 @@ export const theme = createMuiTheme({
   typography: {
     fontFamily: "Quicksand",
     fontSize: 24,
+    button: {
+      fontSize: 20
+    },
+    h6: {
+      fontSize: 24
+    }
   }
 });
 
 theme.props = {
   MuiFormControl: {
     margin: "normal",
-  },
+  }
 };
+
+theme.overrides = {
+  MuiButton: {
+    containedSecondary: {
+      
+    },
+    containedPrimary: {
+      
+    }
+  },
+  MuiLink: {
+    root: {
+      fontFamily: "Quicksand",
+      fontSize: 18
+    }
+  }
+}
