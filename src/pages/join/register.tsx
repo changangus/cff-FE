@@ -44,6 +44,7 @@ const Register: React.FC<registerProps> = ({ }) => {
 
                     
                 }}>
+                {({ isSubmitting }) => (
                 <Form>
                     <Box
                         display="flex"
@@ -82,9 +83,11 @@ const Register: React.FC<registerProps> = ({ }) => {
                             color="primary" 
                             variant="contained" 
                             type="submit"
+                            disabled={isSubmitting}
                             >Register</Button>
                     </Box>
                 </Form>
+                )}
             </Formik>
         </Box>
     );

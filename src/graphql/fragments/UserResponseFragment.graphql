@@ -1,5 +1,5 @@
 fragment UserResponseFragment on UserResponse {
-  error {
+  errors {
     ...ErrorFragment
   }
   user {

@@ -27,7 +27,7 @@ const LoginForm: React.FC<LoginFormProps> = (props) => {
       aria-labelledby="simple-dialog-title"
       open={open}>
       <Box margin={2}>
-        <DialogTitle id="simple-dialog-title">Login</DialogTitle>
+        <DialogTitle id="simple-dialog-title">Login:</DialogTitle>
         <Formik
           initialValues={{
             email: '',
@@ -42,6 +42,7 @@ const LoginForm: React.FC<LoginFormProps> = (props) => {
               handleClose();
             }
           }}>
+          {({ isSubmitting }) => (  
           <Form>
             <Box
               display="flex"
@@ -67,7 +68,8 @@ const LoginForm: React.FC<LoginFormProps> = (props) => {
               <Button
                   color="primary"
                   variant="contained"
-                  type="submit">
+                  type="submit"
+                  disabled={isSubmitting}>
                     Login
               </Button>
               <Box width="100%" display="flex" justifyContent="center" mt={3}>
@@ -77,6 +79,7 @@ const LoginForm: React.FC<LoginFormProps> = (props) => {
               </Box>
             </Box>
           </Form>
+          )}
         </Formik>
       </Box>
     </Dialog>
