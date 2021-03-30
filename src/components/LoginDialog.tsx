@@ -77,6 +77,11 @@ const LoginForm: React.FC<LoginFormProps> = (props) => {
                     <Link href='' onClick={handleClose}>Create New Account</Link>
                 </NextLink>
               </Box>
+              <Box width="100%" display="flex" justifyContent="center" mt={3}>
+                <NextLink href='/forgot-password'>
+                    <Link href='' onClick={handleClose}>Forgot Password?</Link>
+                </NextLink>
+              </Box>
             </Box>
           </Form>
           )}

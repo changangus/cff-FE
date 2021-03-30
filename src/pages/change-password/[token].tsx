@@ -2,17 +2,20 @@ import { Box, Button, Link } from '@material-ui/core';
 import { Formik, Form, Field } from 'formik';
 import { TextField } from 'formik-material-ui';
 import { NextPage } from 'next';
-import router from 'next/router';
-import React from 'react'
+import { useRouter } from 'next/router';
+import React, { useState } from 'react'
+import { useChangePasswordMutation } from '../../generated/graphql';
 import { toErrorMap } from '../../utils/toErrorMap';
-
-interface ChangePasswordProps {
-
-}
+import Alert from '@material-ui/lab/Alert';
+import { withUrqlClient, NextComponentType } from 'next-urql';
+import { createUrqlClient } from '../../utils/createUrqlClient';
 
 const ChangePassword: NextPage<{ token: string }> = ({ token }) => {
+  const [, changePassword] = useChangePasswordMutation();
+  const [tokenError, setTokenError] = useState('');
+  const router = useRouter();
   return (
-    <Box display='flex' justifyContent='center'>
+    <Box display='flex' flexDirection='column' alignItems='center' justifyContent='center'>
       <Box width='40%' height='40%'>
         <Formik
           initialValues={{
@@ -20,12 +23,23 @@ const ChangePassword: NextPage<{ token: string }> = ({ token }) => {
             confirmNewPassword: ''
           }}
           onSubmit={async (values, { setErrors }) => {
-            // const response = await login(values);
-            // if (response.data?.login.errors) {
-            //   setErrors(toErrorMap(response.data.login.errors));
-            // } else if (response.data?.login.user) {
-            //   router.push('/');
-            // }
+            if (values.newPassword !== values.confirmNewPassword) {
+              setErrors({ confirmNewPassword: 'Passwords do not match' })
+            }
+            const response = await changePassword({
+              token,
+              newPassword: values.newPassword
+            });
+            if (response.data?.changePassword.errors) {
+              const errorMap = toErrorMap(response.data.changePassword.errors);
+              if ('token' in errorMap) {
+                setTokenError(errorMap.token)
+              }
+              setErrors(errorMap);
+            } else if (response.data?.changePassword.user) {
+              // change password worked
+              router.push('/');
+            }
           }}>
           <Form>
             <Box
@@ -59,6 +73,11 @@ const ChangePassword: NextPage<{ token: string }> = ({ token }) => {
           </Form>
         </Formik>
       </Box>
+      {tokenError.length > 1 ? 
+      <Box width='50%' mt={4}>
+        <Alert severity='error'>{tokenError}</Alert>
+      </Box> 
+      : null }
     </Box>
   );
 }
@@ -69,4 +88,4 @@ ChangePassword.getInitialProps = ({ query }) => {
   }
 }
 
-export default ChangePassword;
+export default withUrqlClient(createUrqlClient, {ssr: false})(ChangePassword as unknown as NextComponentType);

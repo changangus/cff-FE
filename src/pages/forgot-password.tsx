@@ -4,6 +4,8 @@ import { TextField } from 'formik-material-ui';
 import { useForgotPasswordMutation } from '../generated/graphql';
 import React, { useState } from 'react'
 import Alert from '@material-ui/lab/Alert';
+import { withUrqlClient } from 'next-urql';
+import { createUrqlClient } from '../utils/createUrqlClient';
 
 interface ForgotPasswordProps {
 
@@ -63,4 +65,4 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = ({ }) => {
   );
 }
 
-export default ForgotPassword;
+export default withUrqlClient(createUrqlClient, {ssr: false})(ForgotPassword);
