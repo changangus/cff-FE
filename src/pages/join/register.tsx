@@ -6,6 +6,8 @@ import { useMutation } from 'urql';
 import { useRegisterMutation } from '../../generated/graphql';
 import { toErrorMap } from '../../utils/toErrorMap';
 import { useRouter } from 'next/router';
+import { withUrqlClient } from 'next-urql';
+import { createUrqlClient } from '../../utils/createUrqlClient';
 
 interface registerProps {
 
@@ -18,8 +20,8 @@ const Register: React.FC<registerProps> = ({ }) => {
     const router = useRouter()
     return (
         <Box
-            height="100vh"
-            width="100vw"
+            height="90vh"
+            width="100%"
             display="flex"
             justifyContent="center"
             alignItems="center">
@@ -48,6 +50,7 @@ const Register: React.FC<registerProps> = ({ }) => {
                         flexDirection="column"
                         justifyContent="space-around"
                         height="50%"
+                        width="110%"
                     >
                         <Field
                             component={TextField} 
@@ -87,4 +90,4 @@ const Register: React.FC<registerProps> = ({ }) => {
     );
 }
 
-export default Register;
+export default withUrqlClient(createUrqlClient)(Register);

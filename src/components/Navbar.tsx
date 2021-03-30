@@ -9,7 +9,6 @@ import InputBase from '@material-ui/core/InputBase';
 import Badge from '@material-ui/core/Badge';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
-import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
@@ -17,13 +16,17 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import LoginDialog from './LoginDialog';
 import { useRouter } from 'next/router';
-import { useMeQuery } from '../generated/graphql';
+import { useLogoutMutation, useMeQuery } from '../generated/graphql';
 import { Box } from '@material-ui/core';
+import { isServer } from '../utils/isServer';
 
 export default function Navbar() {
   const classes = useStyles();
   const router = useRouter();
-  const [ {data, fetching}, me ] = useMeQuery();
+  const [, logout] = useLogoutMutation();
+  const [ {data, fetching}, me ] = useMeQuery({
+    pause: isServer()
+  });
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -48,6 +51,11 @@ export default function Navbar() {
     setMobileMoreAnchorEl(event.currentTarget);
   }; 
 
+  const handleLogout = () => {
+    handleMenuClose();
+    logout();
+  }
+
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
@@ -61,7 +69,7 @@ export default function Navbar() {
     >
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-      <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
+      <MenuItem onClick={handleLogout}>Logout</MenuItem>
     </Menu>
   );
 
@@ -136,6 +144,7 @@ export default function Navbar() {
           onClick={handleProfileMenuOpen}
           color="inherit"
         >
+          <Box fontSize={24} mr={1}>Hi, {data.me.firstName}</Box>
           <AccountCircle />
         </IconButton>
       </> 

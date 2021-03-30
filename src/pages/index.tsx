@@ -1,6 +1,8 @@
+import { withUrqlClient } from 'next-urql'
 import Head from 'next/head'
+import { createUrqlClient } from '../utils/createUrqlClient'
 
-export default function Home() {
+function Home() {
   return (
     <div>
       <Head>
@@ -11,4 +13,6 @@ export default function Home() {
       <h1>Hello World</h1>
     </div>
   )
-}
+};
+
+export default withUrqlClient(createUrqlClient)(Home)
