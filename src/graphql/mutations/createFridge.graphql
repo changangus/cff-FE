@@ -1,0 +1,16 @@
+mutation CreateFridge($inputs: FridgeInput!){
+  createFridge(inputs: $inputs) {
+    _id
+    name
+    address
+    description
+    author {
+      firstName
+      lastName
+      email
+      _id
+    }
+    lat
+    lng
+  }
+}

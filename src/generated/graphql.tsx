@@ -30,11 +30,17 @@ export type User = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  createFridge: Fridge;
   register: UserResponse;
   login: UserResponse;
   logout: Scalars['Boolean'];
   forgotPassword: Scalars['Boolean'];
   changePassword: UserResponse;
+};
+
+
+export type MutationCreateFridgeArgs = {
+  inputs: FridgeInput;
 };
 
 
@@ -56,6 +62,23 @@ export type MutationForgotPasswordArgs = {
 export type MutationChangePasswordArgs = {
   newPassword: Scalars['String'];
   token: Scalars['String'];
+};
+
+export type Fridge = {
+  __typename?: 'Fridge';
+  _id?: Maybe<Scalars['ID']>;
+  name: Scalars['String'];
+  address: Scalars['String'];
+  description: Scalars['String'];
+  author: User;
+  lat?: Maybe<Scalars['Float']>;
+  lng?: Maybe<Scalars['Float']>;
+};
+
+export type FridgeInput = {
+  name: Scalars['String'];
+  address: Scalars['String'];
+  description: Scalars['String'];
 };
 
 export type UserResponse = {
@@ -114,6 +137,23 @@ export type ChangePasswordMutation = (
   & { changePassword: (
     { __typename?: 'UserResponse' }
     & UserResponseFragmentFragment
+  ) }
+);
+
+export type CreateFridgeMutationVariables = Exact<{
+  inputs: FridgeInput;
+}>;
+
+
+export type CreateFridgeMutation = (
+  { __typename?: 'Mutation' }
+  & { createFridge: (
+    { __typename?: 'Fridge' }
+    & Pick<Fridge, '_id' | 'name' | 'address' | 'description' | 'lat' | 'lng'>
+    & { author: (
+      { __typename?: 'User' }
+      & Pick<User, 'firstName' | 'lastName' | 'email' | '_id'>
+    ) }
   ) }
 );
 
@@ -211,6 +251,28 @@ export const ChangePasswordDocument = gql`
 
 export function useChangePasswordMutation() {
   return Urql.useMutation<ChangePasswordMutation, ChangePasswordMutationVariables>(ChangePasswordDocument);
+};
+export const CreateFridgeDocument = gql`
+    mutation CreateFridge($inputs: FridgeInput!) {
+  createFridge(inputs: $inputs) {
+    _id
+    name
+    address
+    description
+    author {
+      firstName
+      lastName
+      email
+      _id
+    }
+    lat
+    lng
+  }
+}
+    `;
+
+export function useCreateFridgeMutation() {
+  return Urql.useMutation<CreateFridgeMutation, CreateFridgeMutationVariables>(CreateFridgeDocument);
 };
 export const ForgotPasswordDocument = gql`
     mutation ForgotPassword($email: String!) {

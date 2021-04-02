@@ -21,7 +21,7 @@ const MapContainer: React.FC<MapContainerProps> = ({}) => {
             mapContainerStyle={mapStyle}
             zoom={13}
             center={coordinates}>
-
+              
           </GoogleMap>
         </Box>
     );
