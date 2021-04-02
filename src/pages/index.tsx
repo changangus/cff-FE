@@ -1,5 +1,6 @@
 import { withUrqlClient } from 'next-urql'
 import Head from 'next/head'
+import MapContainer from '../components/MapContainer'
 import { createUrqlClient } from '../utils/createUrqlClient'
 
 function Home() {
@@ -9,8 +10,9 @@ function Home() {
         <title>Community Fridge Finder</title>
         <link rel="preconnect" href="https://fonts.gstatic.com" />
         <link href="https://fonts.googleapis.com/css2?family=Quicksand&display=swap" rel="stylesheet" />
+        <script src='https://maps.googleapis.com/maps/api/js?key=AIzaSyCPE7ZHqAs4y-DGcd0YN8JaUPJ_XnFStrE&libraries=places'></script>
       </Head>
-      <h1>Hello World</h1>
+      <MapContainer />
     </div>
   )
 };
