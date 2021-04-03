@@ -1,0 +1,9 @@
+query GetAllFridges {
+  getAllFridges {
+    _id
+    name
+    address
+    lat 
+    lng 
+  }
+}

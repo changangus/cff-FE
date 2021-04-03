@@ -16,8 +16,20 @@ export type Scalars = {
 
 export type Query = {
   __typename?: 'Query';
+  getAllFridges: Array<Fridge>;
   hello?: Maybe<Scalars['String']>;
   me?: Maybe<User>;
+};
+
+export type Fridge = {
+  __typename?: 'Fridge';
+  _id?: Maybe<Scalars['ID']>;
+  name: Scalars['String'];
+  address: Scalars['String'];
+  description: Scalars['String'];
+  author: User;
+  lat?: Maybe<Scalars['Float']>;
+  lng?: Maybe<Scalars['Float']>;
 };
 
 export type User = {
@@ -62,17 +74,6 @@ export type MutationForgotPasswordArgs = {
 export type MutationChangePasswordArgs = {
   newPassword: Scalars['String'];
   token: Scalars['String'];
-};
-
-export type Fridge = {
-  __typename?: 'Fridge';
-  _id?: Maybe<Scalars['ID']>;
-  name: Scalars['String'];
-  address: Scalars['String'];
-  description: Scalars['String'];
-  author: User;
-  lat?: Maybe<Scalars['Float']>;
-  lng?: Maybe<Scalars['Float']>;
 };
 
 export type FridgeInput = {
@@ -205,6 +206,17 @@ export type RegisterMutation = (
   ) }
 );
 
+export type GetAllFridgesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllFridgesQuery = (
+  { __typename?: 'Query' }
+  & { getAllFridges: Array<(
+    { __typename?: 'Fridge' }
+    & Pick<Fridge, '_id' | 'name' | 'address' | 'lat' | 'lng'>
+  )> }
+);
+
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -315,6 +327,21 @@ export const RegisterDocument = gql`
 
 export function useRegisterMutation() {
   return Urql.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument);
+};
+export const GetAllFridgesDocument = gql`
+    query GetAllFridges {
+  getAllFridges {
+    _id
+    name
+    address
+    lat
+    lng
+  }
+}
+    `;
+
+export function useGetAllFridgesQuery(options: Omit<Urql.UseQueryArgs<GetAllFridgesQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<GetAllFridgesQuery>({ query: GetAllFridgesDocument, ...options });
 };
 export const MeDocument = gql`
     query Me {
