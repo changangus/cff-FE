@@ -14,9 +14,15 @@ interface NewFridgeFormProps {
 
 const NewFridgeForm: React.FC<NewFridgeFormProps> = ({ }) => {
   const [, createFridge] = useCreateFridgeMutation();
-  const [{ data }] = useMeQuery();
+  const [{ data, fetching }] = useMeQuery();
   const router = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useState(data?.me);
+
+  useEffect(() => {
+    if(!fetching && data?.me){
+      setIsLoggedIn(data?.me)
+    }
+  })
 
   return (
     <Box

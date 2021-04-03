@@ -22,7 +22,10 @@ function Home() {
         <Grid item xs={3}>
           <Box
             mt='10px'
-            border='1px solid black'
+            height='89vh'
+            overflow='scroll'
+            borderRadius="10px"
+            boxShadow="5px 5px 5px rgba(68, 68, 68, 0.6)"
             >
             <FridgePreview />
           </Box>
