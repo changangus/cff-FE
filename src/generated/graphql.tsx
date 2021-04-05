@@ -213,7 +213,7 @@ export type GetAllFridgesQuery = (
   { __typename?: 'Query' }
   & { getAllFridges: Array<(
     { __typename?: 'Fridge' }
-    & Pick<Fridge, '_id' | 'name' | 'address' | 'lat' | 'lng'>
+    & Pick<Fridge, '_id' | 'name' | 'address' | 'description' | 'lat' | 'lng'>
   )> }
 );
 
@@ -334,6 +334,7 @@ export const GetAllFridgesDocument = gql`
     _id
     name
     address
+    description
     lat
     lng
   }

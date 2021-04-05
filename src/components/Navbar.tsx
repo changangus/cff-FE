@@ -119,7 +119,7 @@ export default function Navbar() {
 
   } else if (!data?.me) {
     isLoggedInBody = (
-      <Box display="flex" alignItems="center" ml={1}> 
+      <Box display="flex" alignItems="center" ml={1} > 
         <LoginDialog />
       </Box>
     )
@@ -172,19 +172,6 @@ export default function Navbar() {
             }}>
             Fridge Finder
           </Typography>
-          <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
-            </div>
-            <InputBase
-              placeholder="Search…"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              inputProps={{ 'aria-label': 'search' }}
-            />
-          </div>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
             {isLoggedInBody} 

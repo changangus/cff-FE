@@ -3,6 +3,7 @@ query GetAllFridges {
     _id
     name
     address
+    description
     lat 
     lng 
   }
