@@ -23,7 +23,11 @@ const FridgePreview: React.FC<FridgePreviewProps> = ({ name, description, lat, l
       { !name ?
         <Typography variant="h5">Click a Marker to select a Fridge!</Typography>
         :
-        <Box>
+        <Box 
+          boxShadow="5px 5px 5px rgba(68, 68, 68, 0.6)"
+          overflow='scroll'
+          height="90vh"
+          >
           <Typography variant="h5">{name}</Typography>
           <img
             style={{

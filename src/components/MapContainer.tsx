@@ -1,24 +1,31 @@
 import React, { useState } from 'react';
 import { GoogleMap, Marker, InfoWindow } from '@react-google-maps/api';
-import { Box, Grid, Link } from '@material-ui/core';
+import PlacesAutoComplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
+import { Box, Grid, Link, Typography } from '@material-ui/core';
 import { useGetAllFridgesQuery } from '../generated/graphql';
 import FridgePreview from './FridgePreview';
-interface MapContainerProps {
-
-}
 
 const mapStyle = {
   height: "90vh",
   width: "100%",
   borderRadius: '5px',
-  marginTop: "10px"
+  marginTop: "10px",
+  overflow: "hidden"
 }
 
-const MapContainer: React.FC<MapContainerProps> = ({ }) => {
+const MapContainer: React.FC = ({ }) => {
   const [coordinates, setCoordinates] = useState({ lat: 41.8239891, lng: -71.4128343 })
+  const [address, setAddress] = useState("")
   const [{ data, fetching }] = useGetAllFridgesQuery();
   const [selected, setSelected] = useState({} as any);
-  
+
+  const handleSelect = async(value: any) => {
+    const results = await geocodeByAddress(value);
+    const location = await getLatLng(results[0]);
+    setAddress(value);
+    setCoordinates(location)
+  }
+
   return (
 
     <Grid container spacing={2}>
@@ -30,7 +37,7 @@ const MapContainer: React.FC<MapContainerProps> = ({ }) => {
             center={coordinates}>
             {data?.getAllFridges.map(fridge => (
               <Marker
-                position={{ lat: fridge.lat, lng: fridge.lng }}
+                position={{ lat: fridge.lat as number, lng: fridge.lng as number }}
                 key={fridge._id}
                 onClick={() => {
                   setSelected(fridge)
@@ -54,12 +61,45 @@ const MapContainer: React.FC<MapContainerProps> = ({ }) => {
         <Box
           mt='10px'
           height='89vh'
-          overflow='scroll'
           borderRadius="10px"
-          boxShadow="5px 5px 5px rgba(68, 68, 68, 0.6)"
         >
-          <FridgePreview 
-            name={selected.name} 
+          <PlacesAutoComplete
+            value={address}
+            onChange={setAddress}
+            onSelect={handleSelect}>
+            {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
+              <div className='searchbar-container'>
+                <label htmlFor='searchbar'>Search:</label>
+                <input {...getInputProps({ placeholder: 'Find Your City', className: 'searchbar', id: 'searchbar' })} />
+                <div className='searchbar-suggestions'>
+                  {loading && <div>...loading</div>}
+                  {suggestions.map((suggestion) => {
+                    const style = {
+                      width: '100%',
+                      zIndex: '1',
+                      fontFamily: 'inherit',
+                      backgroundColor: suggestion.active ? '#76ced7' : 'white',
+                      fontWeight: 'bold',
+                      outline: 'none',
+                      cursor: 'pointer'
+                    };
+                    return (
+                      <Box
+                       {...getSuggestionItemProps(suggestion)} 
+                       key={suggestion.description}
+                       bgcolor={suggestion.active ? '#76ced7' : 'white'}
+                       
+                       >
+                        <Typography variant="body2">{suggestion.description}</Typography>
+                      </Box>
+                    )
+                  })}
+                </div>
+              </div>
+            )}
+          </PlacesAutoComplete>
+          <FridgePreview
+            name={selected.name}
             description={selected.description}
             address={selected.address}
             lat={selected.lat}

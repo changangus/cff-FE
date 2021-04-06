@@ -119,9 +119,7 @@ export default function Navbar() {
 
   } else if (!data?.me) {
     isLoggedInBody = (
-      <Box display="flex" alignItems="center" ml={1} > 
         <LoginDialog />
-      </Box>
     )
   } else {
     isLoggedInBody = (
