@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { GoogleMap, Marker, InfoWindow } from '@react-google-maps/api';
 import PlacesAutoComplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
-import { Box, Grid, Link, Typography } from '@material-ui/core';
+import { Box, Grid, Link, TextField, Typography } from '@material-ui/core';
 import { useGetAllFridgesQuery } from '../generated/graphql';
 import FridgePreview from './FridgePreview';
 
@@ -29,7 +29,58 @@ const MapContainer: React.FC = ({ }) => {
   return (
 
     <Grid container spacing={2}>
-      <Grid item xs={9}>
+            <Grid item xs={12} sm={4}>
+        <Box
+          mt='10px'
+          height='89vh'
+          borderRadius="10px"
+        >
+          <PlacesAutoComplete
+            value={address}
+            onChange={setAddress}
+            onSelect={handleSelect}>
+            {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
+              <div className='searchbar-container'>
+                <label htmlFor='searchbar' hidden>Search:</label>
+                <Box mb={2} width="100%">
+                  <TextField variant="outlined" fullWidth {...getInputProps({ placeholder: 'Search your area', className: 'searchbar', id: 'searchbar' })} />
+                </Box>
+                <div className='searchbar-suggestions'>
+                  {loading && <Typography variant="body2">...loading</Typography>}
+                  {suggestions.map((suggestion) => {
+                    const style = {
+                      width: '100%',
+                      zIndex: '1',
+                      fontFamily: 'inherit',
+                      backgroundColor: suggestion.active ? '#76ced7' : 'white',
+                      fontWeight: 'bold',
+                      outline: 'none',
+                      cursor: 'pointer'
+                    };
+                    return (
+                      <Box
+                       {...getSuggestionItemProps(suggestion)} 
+                       key={suggestion.description}
+                       bgcolor={suggestion.active ? '#76ced7' : 'white'}
+                       style={{cursor: 'pointer'}}
+                       >
+                        <Typography variant="body2">{suggestion.description}</Typography>
+                      </Box>
+                    )
+                  })}
+                </div>
+              </div>
+            )}
+          </PlacesAutoComplete>
+          <FridgePreview
+            name={selected.name}
+            description={selected.description}
+            address={selected.address}
+            lat={selected.lat}
+            lng={selected.lng} />
+        </Box>
+      </Grid>
+      <Grid item xs={12} sm={8}>
         <Box>
           <GoogleMap
             mapContainerStyle={mapStyle}
@@ -55,55 +106,6 @@ const MapContainer: React.FC = ({ }) => {
               </InfoWindow>
             )}
           </GoogleMap>
-        </Box>
-      </Grid>
-      <Grid item xs={3}>
-        <Box
-          mt='10px'
-          height='89vh'
-          borderRadius="10px"
-        >
-          <PlacesAutoComplete
-            value={address}
-            onChange={setAddress}
-            onSelect={handleSelect}>
-            {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
-              <div className='searchbar-container'>
-                <label htmlFor='searchbar'>Search:</label>
-                <input {...getInputProps({ placeholder: 'Find Your City', className: 'searchbar', id: 'searchbar' })} />
-                <div className='searchbar-suggestions'>
-                  {loading && <div>...loading</div>}
-                  {suggestions.map((suggestion) => {
-                    const style = {
-                      width: '100%',
-                      zIndex: '1',
-                      fontFamily: 'inherit',
-                      backgroundColor: suggestion.active ? '#76ced7' : 'white',
-                      fontWeight: 'bold',
-                      outline: 'none',
-                      cursor: 'pointer'
-                    };
-                    return (
-                      <Box
-                       {...getSuggestionItemProps(suggestion)} 
-                       key={suggestion.description}
-                       bgcolor={suggestion.active ? '#76ced7' : 'white'}
-                       
-                       >
-                        <Typography variant="body2">{suggestion.description}</Typography>
-                      </Box>
-                    )
-                  })}
-                </div>
-              </div>
-            )}
-          </PlacesAutoComplete>
-          <FridgePreview
-            name={selected.name}
-            description={selected.description}
-            address={selected.address}
-            lat={selected.lat}
-            lng={selected.lng} />
         </Box>
       </Grid>
     </Grid>
