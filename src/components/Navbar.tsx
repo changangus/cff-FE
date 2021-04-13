@@ -123,7 +123,7 @@ export default function Navbar() {
   } else {
     isLoggedInBody = (
       <>
-        <Box display="flex" alignItems='center' mt={1}>
+        <Box display="flex" alignItems='center'>
           <NextLink href='/new-fridge-form'>
             <Button variant="contained" color="secondary">Add a Fridge</Button>
           </NextLink>

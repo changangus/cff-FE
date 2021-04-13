@@ -1,25 +1,20 @@
-import { Box, Typography, Button, TextareaAutosize, Input } from '@material-ui/core';
+import { Box, Typography, Button } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import { Formik, Form, Field } from 'formik';
 import { TextField } from 'formik-material-ui';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { useCreateFridgeMutation, useMeQuery } from '../generated/graphql';
-import { toErrorMap } from '../utils/toErrorMap';
 
 
-interface NewFridgeFormProps {
-
-}
-
-const NewFridgeForm: React.FC<NewFridgeFormProps> = ({ }) => {
+const NewFridgeForm: React.FC = ({ }) => {
   const [, createFridge] = useCreateFridgeMutation();
   const [{ data, fetching }] = useMeQuery();
   const router = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useState(data?.me);
 
   useEffect(() => {
-    if(!fetching && data?.me){
+    if (!fetching && data?.me) {
       setIsLoggedIn(data?.me)
     }
   })
@@ -39,15 +34,16 @@ const NewFridgeForm: React.FC<NewFridgeFormProps> = ({ }) => {
         initialValues={{
           name: '',
           address: '',
-          description: ''
+          description: '',
+          file: {}
         }}
         onSubmit={async (values, { setErrors }) => {
           const response = await createFridge({ inputs: values });
-          console.log(response);
+          console.log(values.file);
           router.push('/');
         }}
       >
-        {({ isSubmitting }) => (
+        {({ isSubmitting, setFieldValue }) => (
           <Form style={{ width: '70%' }}>
             <Box
               display="flex"
@@ -55,6 +51,7 @@ const NewFridgeForm: React.FC<NewFridgeFormProps> = ({ }) => {
               justifyContent="space-around"
               height="50%"
               width="100%"
+              mt={6}
             >
               <Field
                 component={TextField}
@@ -77,6 +74,25 @@ const NewFridgeForm: React.FC<NewFridgeFormProps> = ({ }) => {
                 label="Description"
                 variant="outlined"
               />
+              <Box mb={2}>
+                <Button
+                  variant="contained"
+                  component="label"
+                >
+                  Upload Image
+                  <input
+                    accept="image/*"
+                    type="file"
+                    name="image"
+                    onChange={(e: any) => {
+                      setFieldValue('file', e.target.files[0])
+                    }}
+                    hidden
+                  />
+                </Button>
+                { }
+              </Box>
+
               <Button
                 color="primary"
                 variant="contained"
@@ -91,7 +107,7 @@ const NewFridgeForm: React.FC<NewFridgeFormProps> = ({ }) => {
         <Box mt={2}>
           <Alert severity='error'>You must be logged in to add a fridge</Alert>
         </Box>
-      )} 
+      )}
     </Box>
   );
 }
