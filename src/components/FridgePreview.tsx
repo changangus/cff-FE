@@ -12,7 +12,7 @@ interface FridgePreviewProps {
 }
 
 const FridgePreview: React.FC<FridgePreviewProps> = ({ name, description, lat, lng, address, instagram, twitter }) => {
-  console.log(description)
+
   return (
     <Box
       fontSize={18}

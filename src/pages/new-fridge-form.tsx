@@ -5,19 +5,34 @@ import { TextField } from 'formik-material-ui';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { useCreateFridgeMutation, useMeQuery } from '../generated/graphql';
-
+import ReactS3Client from 'react-aws-s3-typescript';
+import { s3Config } from '../utils/s3Config';
 
 const NewFridgeForm: React.FC = ({ }) => {
   const [, createFridge] = useCreateFridgeMutation();
   const [{ data, fetching }] = useMeQuery();
   const router = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useState(data?.me);
+  const [file, setFile] = useState({} as File);
 
   useEffect(() => {
     if (!fetching && data?.me) {
       setIsLoggedIn(data?.me)
     }
-  })
+    console.log('key:', process.env.AWS_SECRET_KEY)
+  });
+
+  const uploadFile = async () => {
+    /* Import s3 config object and call the constrcutor */
+    const s3 = new ReactS3Client(s3Config);
+    try {
+        const res = await s3.uploadFile(file);
+        console.log(res);
+    } catch (exception) {
+        console.log(exception);
+    }
+  }
+/* End of uploadFile.ts */
 
   return (
     <Box
@@ -35,15 +50,16 @@ const NewFridgeForm: React.FC = ({ }) => {
           name: '',
           address: '',
           description: '',
-          file: {}
         }}
         onSubmit={async (values, { setErrors }) => {
+
           const response = await createFridge({ inputs: values });
-          console.log(values.file);
+          
+          console.log(response);
           router.push('/');
         }}
       >
-        {({ isSubmitting, setFieldValue }) => (
+        {({ isSubmitting, setFieldValue, values }) => (
           <Form style={{ width: '70%' }}>
             <Box
               display="flex"
@@ -74,7 +90,10 @@ const NewFridgeForm: React.FC = ({ }) => {
                 label="Description"
                 variant="outlined"
               />
-              <Box mb={2}>
+              <Box
+                display="flex"
+                alignItems="center" 
+                mb={2}>
                 <Button
                   variant="contained"
                   component="label"
@@ -85,12 +104,13 @@ const NewFridgeForm: React.FC = ({ }) => {
                     type="file"
                     name="image"
                     onChange={(e: any) => {
-                      setFieldValue('file', e.target.files[0])
+                      setFile(e.target.files[0]);
+                      uploadFile(); 
                     }}
                     hidden
                   />
                 </Button>
-                { }
+                <Typography style={{marginLeft: "10px"}} variant="body1">Hello</Typography>
               </Box>
 
               <Button
