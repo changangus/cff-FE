@@ -7,11 +7,12 @@ interface FridgePreviewProps {
   address: string,
   lat: number,
   lng: number,
+  imageUrl?: string,
   instagram?: string,
   twitter?: string
 }
 
-const FridgePreview: React.FC<FridgePreviewProps> = ({ name, description, lat, lng, address, instagram, twitter }) => {
+const FridgePreview: React.FC<FridgePreviewProps> = ({ name, description, lat, lng, address, instagram, twitter, imageUrl }) => {
 
   return (
     <Box
@@ -43,7 +44,7 @@ const FridgePreview: React.FC<FridgePreviewProps> = ({ name, description, lat, l
               marginTop: '10px',
               overflow: 'scroll'
             }}
-            src="https://images.unsplash.com/photo-1562919479-b0c98b0d7f8e?ixid=MXwxMjA3fDB8MHxzZWFyY2h8N3x8ZnJpZGdlfGVufDB8fDB8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+            src={imageUrl}
             alt="fridge" />
           <Box
             padding='0.5rem'

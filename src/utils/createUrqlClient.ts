@@ -25,7 +25,8 @@ export const createUrqlClient = (ssrExchange: SSRExchange) => ({
                   me: result.login.user
                 };
               }
-            })
+            }
+          )
         },
         logout: (_result, args, cache, info) => {
           typedUpdateQuery<LogoutMutation, MeQuery>(
@@ -48,9 +49,9 @@ export const createUrqlClient = (ssrExchange: SSRExchange) => ({
                   me: result.register.user
                 };
               }
-            })
-        },
-        
+            }
+          )
+        },  
       }
     }
   }),

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useStyles } from '../styles/Navbar.styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -66,8 +65,11 @@ export default function Navbar() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem onClick={handleMenuClose}>
+        <NextLink href='/my-account'>
+          <Typography>My account</Typography>
+        </NextLink>
+      </MenuItem>
       <MenuItem onClick={handleLogout}>Logout</MenuItem>
     </Menu>
   );
@@ -84,16 +86,16 @@ export default function Navbar() {
       onClose={handleMobileMenuClose}
     >
       <MenuItem>
-        <IconButton aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="error">
+        <IconButton color="inherit">
+          <Badge color="error">
             <MailIcon />
           </Badge>
         </IconButton>
         <p>Messages</p>
       </MenuItem>
       <MenuItem>
-        <IconButton aria-label="show 11 new notifications" color="inherit">
-          <Badge badgeContent={11} color="error">
+        <IconButton color="inherit">
+          <Badge color="error">
             <NotificationsIcon />
           </Badge>
         </IconButton>

@@ -4,6 +4,9 @@ query GetAllFridges {
     name
     address
     description
+    instagram
+    twitter
+    imageUrl
     lat 
     lng 
   }

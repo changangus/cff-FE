@@ -27,6 +27,7 @@ export type Fridge = {
   name: Scalars['String'];
   address: Scalars['String'];
   description: Scalars['String'];
+  imageUrl: Scalars['String'];
   author: User;
   lat?: Maybe<Scalars['Float']>;
   lng?: Maybe<Scalars['Float']>;
@@ -80,6 +81,7 @@ export type FridgeInput = {
   name: Scalars['String'];
   address: Scalars['String'];
   description: Scalars['String'];
+  imageUrl: Scalars['String'];
 };
 
 export type UserResponse = {
@@ -213,7 +215,7 @@ export type GetAllFridgesQuery = (
   { __typename?: 'Query' }
   & { getAllFridges: Array<(
     { __typename?: 'Fridge' }
-    & Pick<Fridge, '_id' | 'name' | 'address' | 'description' | 'lat' | 'lng'>
+    & Pick<Fridge, '_id' | 'name' | 'address' | 'description' | 'imageUrl' | 'lat' | 'lng'>
   )> }
 );
 
@@ -335,6 +337,7 @@ export const GetAllFridgesDocument = gql`
     name
     address
     description
+    imageUrl
     lat
     lng
   }

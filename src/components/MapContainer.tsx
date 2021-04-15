@@ -77,7 +77,8 @@ const MapContainer: React.FC = ({ }) => {
             description={selected.description}
             address={selected.address}
             lat={selected.lat}
-            lng={selected.lng} />
+            lng={selected.lng}
+            imageUrl={selected.imageUrl} />
         </Box>
       </Grid>
       <Grid item xs={12} sm={8}>
@@ -92,15 +93,14 @@ const MapContainer: React.FC = ({ }) => {
                 key={fridge._id}
                 onClick={() => {
                   setSelected(fridge)
-                  console.log(fridge)
                 }} />
             ))}
             {selected.lat && (
               <InfoWindow
                 position={{ lat: selected.lat, lng: selected.lng }}
                 onCloseClick={() => setSelected({})}>
-                <Box>
-                  <h2>{selected.name}</h2>
+                <Box p={1}>
+                  <h2 style={{marginTop: "0", marginBottom: '10px'}}>{selected.name}</h2>
                   <Link href={`https://www.google.com/maps/dir/?api=1&destination=${selected.lat},${selected.lng}`} target='_blank'>{selected.address}</Link>
                 </Box>
               </InfoWindow>

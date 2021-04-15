@@ -14,23 +14,22 @@ const NewFridgeForm: React.FC = ({ }) => {
   const router = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useState(data?.me);
   const [file, setFile] = useState({} as File);
+  const [imageUrl, setImageUrl] = useState('');
 
   useEffect(() => {
     if (!fetching && data?.me) {
       setIsLoggedIn(data?.me)
     }
-    console.log('key:', process.env.AWS_SECRET_KEY)
   });
 
-  const uploadFile = async () => {
+  const uploadFile = async (): Promise<string> => {
     /* Import s3 config object and call the constrcutor */
     const s3 = new ReactS3Client(s3Config);
-    try {
-        const res = await s3.uploadFile(file);
-        console.log(res);
-    } catch (exception) {
-        console.log(exception);
-    }
+    const res = await s3.uploadFile(file);
+    const url = res.location;
+    setImageUrl(url);
+    console.log(imageUrl);
+    return url;
   }
 /* End of uploadFile.ts */
 
@@ -50,22 +49,24 @@ const NewFridgeForm: React.FC = ({ }) => {
           name: '',
           address: '',
           description: '',
+          instagram: '',
+          twitter: ''
         }}
-        onSubmit={async (values, { setErrors }) => {
-
-          const response = await createFridge({ inputs: values });
-          
-          console.log(response);
+        onSubmit={async (values, { setFieldValue }) => {
+          const res = await uploadFile(); 
+          console.log(res)
+          setFieldValue('imageUrl', res);
+          const response = await createFridge({ inputs: {...values, imageUrl: res} });
           router.push('/');
         }}
       >
-        {({ isSubmitting, setFieldValue, values }) => (
+        {({ isSubmitting }) => (
           <Form style={{ width: '70%' }}>
             <Box
               display="flex"
               flexDirection="column"
               justifyContent="space-around"
-              height="50%"
+              height="85%"
               width="100%"
               mt={6}
             >
@@ -74,12 +75,26 @@ const NewFridgeForm: React.FC = ({ }) => {
                 id="name"
                 label="Fridge Name"
                 name="name"
-                variant="outlined" />
+                variant="outlined"
+                required />
               <Field
                 component={TextField}
                 id="address"
                 name="address"
                 label="Address"
+                variant="outlined" 
+                required />
+              <Field
+                component={TextField}
+                id="instagram"
+                name="instagram"
+                label="Instagram Link"
+                variant="outlined" />
+              <Field
+                component={TextField}
+                id="twitter"
+                name="twitter"
+                label="Twitter Link"
                 variant="outlined" />
               <Field
                 component={TextField}
@@ -89,11 +104,13 @@ const NewFridgeForm: React.FC = ({ }) => {
                 name="description"
                 label="Description"
                 variant="outlined"
+                required
               />
               <Box
                 display="flex"
                 alignItems="center" 
-                mb={2}>
+                mb={2}
+                mt={1}>
                 <Button
                   variant="contained"
                   component="label"
@@ -102,15 +119,14 @@ const NewFridgeForm: React.FC = ({ }) => {
                   <input
                     accept="image/*"
                     type="file"
-                    name="image"
                     onChange={(e: any) => {
                       setFile(e.target.files[0]);
-                      uploadFile(); 
                     }}
                     hidden
                   />
+                  
                 </Button>
-                <Typography style={{marginLeft: "10px"}} variant="body1">Hello</Typography>
+                <Typography style={{marginLeft: "10px"}} variant="body1">{file.name}</Typography>
               </Box>
 
               <Button
