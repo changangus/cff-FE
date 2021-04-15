@@ -1,8 +1,8 @@
 export const s3Config = {
   bucketName:  'com-fridge-finder',
   region: 'us-east-2',
-  accessKeyId: 'AKIA3NTQEQPDJKRNBLHP',
-  secretAccessKey: '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',
+  accessKeyId: process.env.AWS_ACCESS_KEY,
+  secretAccessKey: process.env.AWS_SECRET_KEY,
   acl: 'public-read'
 };
 
