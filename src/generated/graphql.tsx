@@ -28,6 +28,8 @@ export type Fridge = {
   address: Scalars['String'];
   description: Scalars['String'];
   imageUrl: Scalars['String'];
+  instagram: Scalars['String'];
+  twitter: Scalars['String'];
   author: User;
   lat?: Maybe<Scalars['Float']>;
   lng?: Maybe<Scalars['Float']>;
@@ -47,6 +49,8 @@ export type Mutation = {
   register: UserResponse;
   login: UserResponse;
   logout: Scalars['Boolean'];
+  updateUser: UserResponse;
+  deleteUser: Scalars['Boolean'];
   forgotPassword: Scalars['Boolean'];
   changePassword: UserResponse;
 };
@@ -67,6 +71,11 @@ export type MutationLoginArgs = {
 };
 
 
+export type MutationUpdateUserArgs = {
+  options: UpdateInput;
+};
+
+
 export type MutationForgotPasswordArgs = {
   email: Scalars['String'];
 };
@@ -82,6 +91,8 @@ export type FridgeInput = {
   address: Scalars['String'];
   description: Scalars['String'];
   imageUrl: Scalars['String'];
+  instagram: Scalars['String'];
+  twitter: Scalars['String'];
 };
 
 export type UserResponse = {
@@ -104,6 +115,13 @@ export type RegisterInput = {
 };
 
 export type LoginInput = {
+  email: Scalars['String'];
+  password: Scalars['String'];
+};
+
+export type UpdateInput = {
+  firstName: Scalars['String'];
+  lastName: Scalars['String'];
   email: Scalars['String'];
   password: Scalars['String'];
 };
@@ -160,6 +178,14 @@ export type CreateFridgeMutation = (
   ) }
 );
 
+export type DeleteUserMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type DeleteUserMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'deleteUser'>
+);
+
 export type ForgotPasswordMutationVariables = Exact<{
   email: Scalars['String'];
 }>;
@@ -208,6 +234,22 @@ export type RegisterMutation = (
   ) }
 );
 
+export type UpdateUserMutationVariables = Exact<{
+  firstName: Scalars['String'];
+  lastName: Scalars['String'];
+  email: Scalars['String'];
+  password: Scalars['String'];
+}>;
+
+
+export type UpdateUserMutation = (
+  { __typename?: 'Mutation' }
+  & { updateUser: (
+    { __typename?: 'UserResponse' }
+    & UserResponseFragmentFragment
+  ) }
+);
+
 export type GetAllFridgesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -215,7 +257,7 @@ export type GetAllFridgesQuery = (
   { __typename?: 'Query' }
   & { getAllFridges: Array<(
     { __typename?: 'Fridge' }
-    & Pick<Fridge, '_id' | 'name' | 'address' | 'description' | 'imageUrl' | 'lat' | 'lng'>
+    & Pick<Fridge, '_id' | 'name' | 'address' | 'description' | 'instagram' | 'twitter' | 'imageUrl' | 'lat' | 'lng'>
   )> }
 );
 
@@ -288,6 +330,15 @@ export const CreateFridgeDocument = gql`
 export function useCreateFridgeMutation() {
   return Urql.useMutation<CreateFridgeMutation, CreateFridgeMutationVariables>(CreateFridgeDocument);
 };
+export const DeleteUserDocument = gql`
+    mutation DeleteUser {
+  deleteUser
+}
+    `;
+
+export function useDeleteUserMutation() {
+  return Urql.useMutation<DeleteUserMutation, DeleteUserMutationVariables>(DeleteUserDocument);
+};
 export const ForgotPasswordDocument = gql`
     mutation ForgotPassword($email: String!) {
   forgotPassword(email: $email)
@@ -330,6 +381,19 @@ export const RegisterDocument = gql`
 export function useRegisterMutation() {
   return Urql.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument);
 };
+export const UpdateUserDocument = gql`
+    mutation UpdateUser($firstName: String!, $lastName: String!, $email: String!, $password: String!) {
+  updateUser(
+    options: {firstName: $firstName, lastName: $lastName, email: $email, password: $password}
+  ) {
+    ...UserResponseFragment
+  }
+}
+    ${UserResponseFragmentFragmentDoc}`;
+
+export function useUpdateUserMutation() {
+  return Urql.useMutation<UpdateUserMutation, UpdateUserMutationVariables>(UpdateUserDocument);
+};
 export const GetAllFridgesDocument = gql`
     query GetAllFridges {
   getAllFridges {
@@ -337,6 +401,8 @@ export const GetAllFridgesDocument = gql`
     name
     address
     description
+    instagram
+    twitter
     imageUrl
     lat
     lng

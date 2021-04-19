@@ -31,7 +31,6 @@ const NewFridgeForm: React.FC = ({ }) => {
     console.log(imageUrl);
     return url;
   }
-/* End of uploadFile.ts */
 
   return (
     <Box
@@ -56,7 +55,7 @@ const NewFridgeForm: React.FC = ({ }) => {
           const res = await uploadFile(); 
           console.log(res)
           setFieldValue('imageUrl', res);
-          const response = await createFridge({ inputs: {...values, imageUrl: res} });
+          await createFridge({ inputs: {...values, imageUrl: res} });
           router.push('/');
         }}
       >

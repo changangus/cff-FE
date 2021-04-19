@@ -1,6 +1,6 @@
 import { dedupExchange, fetchExchange } from 'urql';
 import { cacheExchange } from '@urql/exchange-graphcache';
-import { LoginMutation, MeQuery, MeDocument, RegisterMutation, LogoutMutation } from '../generated/graphql';
+import { LoginMutation, MeQuery, MeDocument, RegisterMutation, LogoutMutation, DeleteUserMutation } from '../generated/graphql';
 import { SSRExchange } from "next-urql";
 import { typedUpdateQuery } from './typedUpdateQuery';
 
@@ -30,6 +30,14 @@ export const createUrqlClient = (ssrExchange: SSRExchange) => ({
         },
         logout: (_result, args, cache, info) => {
           typedUpdateQuery<LogoutMutation, MeQuery>(
+            cache,
+            {query: MeDocument},
+            _result,
+            () => ({me: null})
+          )
+        },
+        deleteUser: (_result, args, cache, info) => {
+          typedUpdateQuery<DeleteUserMutation, MeQuery>(
             cache,
             {query: MeDocument},
             _result,

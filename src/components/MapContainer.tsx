@@ -25,9 +25,10 @@ const MapContainer: React.FC = ({ }) => {
     setAddress(value);
     setCoordinates(location)
   }
-
+  
   return (
-
+    fetching ? <></>
+    :
     <Grid container spacing={2}>
             <Grid item xs={12} sm={4}>
         <Box

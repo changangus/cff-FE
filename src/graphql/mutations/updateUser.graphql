@@ -1,0 +1,10 @@
+    mutation UpdateUser($firstName: String!, $lastName: String!, $email: String!, $password: String!){
+        updateUser(options: {
+          firstName: $firstName, 
+          lastName: $lastName
+          email: $email,
+          password: $password,
+            }){
+          ...UserResponseFragment
+        }
+      }
