@@ -17,6 +17,7 @@ export type Scalars = {
 export type Query = {
   __typename?: 'Query';
   getAllFridges: Array<Fridge>;
+  getMyFridges: Array<Fridge>;
   hello?: Maybe<Scalars['String']>;
   me?: Maybe<User>;
 };
@@ -261,6 +262,17 @@ export type GetAllFridgesQuery = (
   )> }
 );
 
+export type GetMyFridgesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetMyFridgesQuery = (
+  { __typename?: 'Query' }
+  & { getMyFridges: Array<(
+    { __typename?: 'Fridge' }
+    & Pick<Fridge, '_id' | 'name' | 'imageUrl'>
+  )> }
+);
+
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -412,6 +424,19 @@ export const GetAllFridgesDocument = gql`
 
 export function useGetAllFridgesQuery(options: Omit<Urql.UseQueryArgs<GetAllFridgesQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<GetAllFridgesQuery>({ query: GetAllFridgesDocument, ...options });
+};
+export const GetMyFridgesDocument = gql`
+    query GetMyFridges {
+  getMyFridges {
+    _id
+    name
+    imageUrl
+  }
+}
+    `;
+
+export function useGetMyFridgesQuery(options: Omit<Urql.UseQueryArgs<GetMyFridgesQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<GetMyFridgesQuery>({ query: GetMyFridgesDocument, ...options });
 };
 export const MeDocument = gql`
     query Me {

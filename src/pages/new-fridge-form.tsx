@@ -13,9 +13,9 @@ const NewFridgeForm: React.FC = ({ }) => {
   const [{ data, fetching }] = useMeQuery();
   const router = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useState(data?.me);
-  const [file, setFile] = useState({} as File);
+  const [file, setFile] = useState(undefined as unknown as File);
   const [imageUrl, setImageUrl] = useState('');
-
+  
   useEffect(() => {
     if (!fetching && data?.me) {
       setIsLoggedIn(data?.me)
@@ -25,12 +25,13 @@ const NewFridgeForm: React.FC = ({ }) => {
   const uploadFile = async (): Promise<string> => {
     /* Import s3 config object and call the constrcutor */
     const s3 = new ReactS3Client(s3Config);
+    console.log('Inupload:', file);
     const res = await s3.uploadFile(file);
     const url = res.location;
     setImageUrl(url);
     console.log(imageUrl);
     return url;
-  }
+  };
 
   return (
     <Box
@@ -52,10 +53,12 @@ const NewFridgeForm: React.FC = ({ }) => {
           twitter: ''
         }}
         onSubmit={async (values, { setFieldValue }) => {
-          const res = await uploadFile(); 
-          console.log(res)
-          setFieldValue('imageUrl', res);
-          await createFridge({ inputs: {...values, imageUrl: res} });
+          if(!file) {
+            await createFridge({ inputs: {...values, imageUrl: ''} });
+          } else {
+            const res = await uploadFile(); 
+            await createFridge({ inputs: {...values, imageUrl: res} });
+          }
           router.push('/');
         }}
       >
@@ -118,6 +121,7 @@ const NewFridgeForm: React.FC = ({ }) => {
                   <input
                     accept="image/*"
                     type="file"
+                    id="file"
                     onChange={(e: any) => {
                       setFile(e.target.files[0]);
                     }}
@@ -125,7 +129,7 @@ const NewFridgeForm: React.FC = ({ }) => {
                   />
                   
                 </Button>
-                <Typography style={{marginLeft: "10px"}} variant="body1">{file.name}</Typography>
+                <Typography style={{marginLeft: "10px"}} variant="body1">{file ? file.name : ''}</Typography>
               </Box>
 
               <Button

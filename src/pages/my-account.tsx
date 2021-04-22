@@ -1,8 +1,10 @@
-import { Box, Button, Typography } from '@material-ui/core';
-import React from 'react';
+import { Box, Button, Grid, Typography } from '@material-ui/core';
+import React, { useEffect } from 'react';
 import AlertDialog from '../components/AlertDialog';
 import EditProfileDialog from '../components/EditProfileDialog';
-import { useMeQuery } from '../generated/graphql';
+import MyFridgesItem from '../components/MyFridgesItem';
+import MyFridgesList from '../components/MyFridgesList';
+import { useGetMyFridgesQuery, useMeQuery } from '../generated/graphql';
 
 interface MyAccountProps {
 
@@ -13,8 +15,8 @@ const MyAccount: React.FC<MyAccountProps> = ({}) => {
 
   return (
         <div>
-          <Box mt={3} display="flex" flexDirection="column" justifyContent="space-between" alignItems="start" height="40vh">
-            <Typography variant="h4">User Profile:</Typography>
+          <Box mt={2} mb={5} display="flex" flexDirection="column" justifyContent="space-around" alignItems="start" height="40vh">
+            <Typography variant="h5">User Profile:</Typography>
             <Typography variant="body1">First Name: {data?.me?.firstName}</Typography>
             <Typography variant="body1">Last Name: {data?.me?.lastName}</Typography>
             <Typography variant="body1">Email: {data?.me?.email}</Typography>            
@@ -23,6 +25,10 @@ const MyAccount: React.FC<MyAccountProps> = ({}) => {
               <AlertDialog />
             </Box>
           </Box>
+          <Box mb={3}>
+            <Typography variant="h5">Fridges Added:</Typography>
+          </Box>
+          <MyFridgesList />
         </div>
   );
 }

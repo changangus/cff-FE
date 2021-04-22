@@ -1,0 +1,7 @@
+query GetMyFridges {
+  getMyFridges {
+    _id
+    name
+    imageUrl
+  }
+}
