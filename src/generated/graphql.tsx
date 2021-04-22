@@ -18,8 +18,14 @@ export type Query = {
   __typename?: 'Query';
   getAllFridges: Array<Fridge>;
   getMyFridges: Array<Fridge>;
+  getFridge: Fridge;
   hello?: Maybe<Scalars['String']>;
   me?: Maybe<User>;
+};
+
+
+export type QueryGetFridgeArgs = {
+  id: Scalars['String'];
 };
 
 export type Fridge = {
@@ -47,6 +53,8 @@ export type User = {
 export type Mutation = {
   __typename?: 'Mutation';
   createFridge: Fridge;
+  updateFridge: Fridge;
+  deleteFridge: Scalars['Boolean'];
   register: UserResponse;
   login: UserResponse;
   logout: Scalars['Boolean'];
@@ -59,6 +67,16 @@ export type Mutation = {
 
 export type MutationCreateFridgeArgs = {
   inputs: FridgeInput;
+};
+
+
+export type MutationUpdateFridgeArgs = {
+  inputs: UpdateFridgeInput;
+};
+
+
+export type MutationDeleteFridgeArgs = {
+  id: Scalars['String'];
 };
 
 
@@ -94,6 +112,16 @@ export type FridgeInput = {
   imageUrl: Scalars['String'];
   instagram: Scalars['String'];
   twitter: Scalars['String'];
+};
+
+export type UpdateFridgeInput = {
+  name: Scalars['String'];
+  address: Scalars['String'];
+  description: Scalars['String'];
+  imageUrl: Scalars['String'];
+  instagram: Scalars['String'];
+  twitter: Scalars['String'];
+  id: Scalars['String'];
 };
 
 export type UserResponse = {
@@ -179,6 +207,16 @@ export type CreateFridgeMutation = (
   ) }
 );
 
+export type DeleteFridgeMutationVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type DeleteFridgeMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'deleteFridge'>
+);
+
 export type DeleteUserMutationVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -235,6 +273,19 @@ export type RegisterMutation = (
   ) }
 );
 
+export type UpdateFridgeMutationVariables = Exact<{
+  inputs: UpdateFridgeInput;
+}>;
+
+
+export type UpdateFridgeMutation = (
+  { __typename?: 'Mutation' }
+  & { updateFridge: (
+    { __typename?: 'Fridge' }
+    & Pick<Fridge, '_id' | 'name'>
+  ) }
+);
+
 export type UpdateUserMutationVariables = Exact<{
   firstName: Scalars['String'];
   lastName: Scalars['String'];
@@ -260,6 +311,19 @@ export type GetAllFridgesQuery = (
     { __typename?: 'Fridge' }
     & Pick<Fridge, '_id' | 'name' | 'address' | 'description' | 'instagram' | 'twitter' | 'imageUrl' | 'lat' | 'lng'>
   )> }
+);
+
+export type GetFridgeQueryVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type GetFridgeQuery = (
+  { __typename?: 'Query' }
+  & { getFridge: (
+    { __typename?: 'Fridge' }
+    & Pick<Fridge, '_id' | 'name' | 'address' | 'description' | 'instagram' | 'twitter' | 'imageUrl'>
+  ) }
 );
 
 export type GetMyFridgesQueryVariables = Exact<{ [key: string]: never; }>;
@@ -342,6 +406,15 @@ export const CreateFridgeDocument = gql`
 export function useCreateFridgeMutation() {
   return Urql.useMutation<CreateFridgeMutation, CreateFridgeMutationVariables>(CreateFridgeDocument);
 };
+export const DeleteFridgeDocument = gql`
+    mutation DeleteFridge($id: String!) {
+  deleteFridge(id: $id)
+}
+    `;
+
+export function useDeleteFridgeMutation() {
+  return Urql.useMutation<DeleteFridgeMutation, DeleteFridgeMutationVariables>(DeleteFridgeDocument);
+};
 export const DeleteUserDocument = gql`
     mutation DeleteUser {
   deleteUser
@@ -393,6 +466,18 @@ export const RegisterDocument = gql`
 export function useRegisterMutation() {
   return Urql.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument);
 };
+export const UpdateFridgeDocument = gql`
+    mutation UpdateFridge($inputs: UpdateFridgeInput!) {
+  updateFridge(inputs: $inputs) {
+    _id
+    name
+  }
+}
+    `;
+
+export function useUpdateFridgeMutation() {
+  return Urql.useMutation<UpdateFridgeMutation, UpdateFridgeMutationVariables>(UpdateFridgeDocument);
+};
 export const UpdateUserDocument = gql`
     mutation UpdateUser($firstName: String!, $lastName: String!, $email: String!, $password: String!) {
   updateUser(
@@ -424,6 +509,23 @@ export const GetAllFridgesDocument = gql`
 
 export function useGetAllFridgesQuery(options: Omit<Urql.UseQueryArgs<GetAllFridgesQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<GetAllFridgesQuery>({ query: GetAllFridgesDocument, ...options });
+};
+export const GetFridgeDocument = gql`
+    query GetFridge($id: String!) {
+  getFridge(id: $id) {
+    _id
+    name
+    address
+    description
+    instagram
+    twitter
+    imageUrl
+  }
+}
+    `;
+
+export function useGetFridgeQuery(options: Omit<Urql.UseQueryArgs<GetFridgeQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<GetFridgeQuery>({ query: GetFridgeDocument, ...options });
 };
 export const GetMyFridgesDocument = gql`
     query GetMyFridges {

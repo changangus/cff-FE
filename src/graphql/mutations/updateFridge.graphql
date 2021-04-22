@@ -1,0 +1,6 @@
+mutation UpdateFridge($inputs: UpdateFridgeInput!) {
+  updateFridge(inputs: $inputs){
+    _id
+    name
+  }
+}

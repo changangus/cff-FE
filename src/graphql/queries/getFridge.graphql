@@ -1,0 +1,11 @@
+query GetFridge($id: String!) {
+  getFridge(id: $id) {
+    _id
+    name
+    address
+    description
+    instagram
+    twitter
+    imageUrl
+  }
+}
