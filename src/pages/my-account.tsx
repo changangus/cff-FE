@@ -4,14 +4,11 @@ import AlertDialog from '../components/AlertDialog';
 import EditProfileDialog from '../components/EditProfileDialog';
 import MyFridgesItem from '../components/MyFridgesItem';
 import MyFridgesList from '../components/MyFridgesList';
-import { useGetMyFridgesQuery, useMeQuery } from '../generated/graphql';
+import { useDeleteUserMutation, useMeQuery } from '../generated/graphql';
 
-interface MyAccountProps {
-
-}
-
-const MyAccount: React.FC<MyAccountProps> = ({}) => {
+const MyAccount: React.FC = ({}) => {
   const [{data, fetching}, me] = useMeQuery();
+  const [, deleteUser] = useDeleteUserMutation();
 
   return (
         <div>
@@ -22,7 +19,11 @@ const MyAccount: React.FC<MyAccountProps> = ({}) => {
             <Typography variant="body1">Email: {data?.me?.email}</Typography>            
             <Box display="flex" justifyContent="space-between" width="30vw">
               <EditProfileDialog />
-              <AlertDialog />
+              <AlertDialog 
+                deleteFn={deleteUser}
+                buttonText="Delete Account"
+                title="Are you sure you want to delete your account?"
+                body="All data will be deleted including any fridges you have added to our database."/>
             </Box>
           </Box>
           <Box mb={3}>

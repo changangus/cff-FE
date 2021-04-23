@@ -5,12 +5,17 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { useDeleteUserMutation } from '../generated/graphql';
 import { useRouter } from 'next/router';
 
-export default function AlertDialog() {
+interface AlertDialogProps {
+  deleteFn: () => void,
+  buttonText: string,
+  title: string,
+  body: string
+}
+
+const AlertDialog: React.FC<AlertDialogProps> = ({ deleteFn, title, body, buttonText }) => {
   const [open, setOpen] = React.useState(false);
-  const [, deleteUser] = useDeleteUserMutation();
   const router = useRouter();
 
   const handleClickOpen = () => {
@@ -22,7 +27,7 @@ export default function AlertDialog() {
   };
 
   const handleDelete = () => {
-    deleteUser();
+    deleteFn();
     handleClose();
     router.push('/')
   } 
@@ -30,7 +35,7 @@ export default function AlertDialog() {
   return (
     <div>
       <Button variant="contained" onClick={handleClickOpen}>
-        Delete Account
+        {buttonText}
       </Button>
       <Dialog
         open={open}
@@ -38,10 +43,10 @@ export default function AlertDialog() {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">Are you sure you want to delete your account?</DialogTitle>
+        <DialogTitle id="alert-dialog-title">{title}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            All data will be deleted including any fridges you have added to our database. 
+            {body} 
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -55,4 +60,6 @@ export default function AlertDialog() {
       </Dialog>
     </div>
   );
-}
+};
+
+export default AlertDialog; 

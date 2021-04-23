@@ -11,7 +11,7 @@ const MyFridgesList: React.FC<MyFridgesListProps> = ({ }) => {
   const [{ data, fetching }, getMyFridges] = useGetMyFridgesQuery();
   return (
     <div>
-      <Grid container spacing={1}>
+      <Grid container spacing={3}>
         {data?.getMyFridges.map(fridge => (
           <Grid item sm={3} key={fridge._id}>
             <MyFridgesItem title={fridge.name} id={fridge._id as string} imageUrl={fridge.imageUrl} />
