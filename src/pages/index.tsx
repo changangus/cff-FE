@@ -6,7 +6,7 @@ import MapContainer from '../components/MapContainer'
 import { createUrqlClient } from '../utils/createUrqlClient'
 
 function Home() {
-  console.log("url:", process.env.API_URL)
+  console.log("API URL:", process.env.API_URL)
   return (
     <div>
       <Head>
