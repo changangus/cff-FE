@@ -2,7 +2,6 @@ import { Box, Grid } from '@material-ui/core'
 import { withUrqlClient } from 'next-urql'
 import Head from 'next/head'
 import React from 'react'
-import FridgePreview from '../components/FridgePreview'
 import MapContainer from '../components/MapContainer'
 import { createUrqlClient } from '../utils/createUrqlClient'
 

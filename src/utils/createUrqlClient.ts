@@ -5,7 +5,7 @@ import { SSRExchange } from "next-urql";
 import { typedUpdateQuery } from './typedUpdateQuery';
 
 export const createUrqlClient = (ssrExchange: SSRExchange) => ({ 
-  url: 'https://community-fridge-finder.herokuapp.com/graphql',
+  url: process.env.API_URL as string,
   exchanges: [dedupExchange, cacheExchange({
     updates: {
       Mutation: {
