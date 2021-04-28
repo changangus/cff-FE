@@ -1,6 +1,6 @@
 import { Box, Button, Grid, Typography } from '@material-ui/core';
 import React, { useEffect } from 'react';
-import AlertDialog from '../components/AlertDialog';
+import AlertDialog from '../components/DeleteAccountAlertDialog';
 import EditProfileDialog from '../components/EditProfileDialog';
 import MyFridgesItem from '../components/MyFridgesItem';
 import MyFridgesList from '../components/MyFridgesList';

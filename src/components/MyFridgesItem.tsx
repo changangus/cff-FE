@@ -1,6 +1,7 @@
 import { Box, Button, Paper, Typography } from '@material-ui/core';
 import React from 'react';
-import NextLink from 'next/link'
+import NextLink from 'next/link';
+import DeleteFridgeAlertDialog from '../components/DeleteFridgeAlertDialog';
 interface MyFridgesItemProps {
   title: string,
   imageUrl: string,
@@ -25,7 +26,7 @@ const MyFridgesItem: React.FC<MyFridgesItemProps> = ({ title, id, imageUrl }) =>
               <Button variant="contained" color="secondary">Edit</Button>
             </NextLink>
           </Box>
-          <Button variant="contained">Delete</Button>
+          <DeleteFridgeAlertDialog id={id} />
         </Box>
       </Paper>
     </Box>
