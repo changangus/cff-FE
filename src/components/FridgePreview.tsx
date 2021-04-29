@@ -38,11 +38,11 @@ const FridgePreview: React.FC<FridgePreviewProps> = ({ name, description, lat, l
           <Typography variant="h5">{name}</Typography>
           <img
             style={{
-              width: "80%",
+              width: '80%',
               borderRadius: '5px',
               marginBottom: '10px',
               marginTop: '10px',
-              overflow: 'scroll'
+              overflow: 'auto'
             }}
             src={imageUrl}
             alt="fridge" />
@@ -54,9 +54,10 @@ const FridgePreview: React.FC<FridgePreviewProps> = ({ name, description, lat, l
               <br></br>
               Address: <Link href={`https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`} target='_blank'>{address}</Link>
               <br></br>
-              {instagram ? `Instagram: ${instagram}` : null}
               <br></br>
-              {twitter ? `Twitter: ${twitter}` : null}
+              {instagram ? <a href={instagram} target='_blank'>Instagram</a> : null}
+              <br></br>
+              {twitter ? <a href={twitter} target='_blank'>Twitter</a> : null}
             </Typography>
           </Box>
         </Box>

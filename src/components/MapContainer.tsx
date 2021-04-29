@@ -79,7 +79,9 @@ const MapContainer: React.FC = ({ }) => {
             address={selected.address}
             lat={selected.lat}
             lng={selected.lng}
-            imageUrl={selected.imageUrl} />
+            imageUrl={selected.imageUrl}
+            instagram={selected.instagram}
+            twitter={selected.twitter} />
         </Box>
       </Grid>
       <Grid item xs={12} sm={8}>

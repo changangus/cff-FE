@@ -13,7 +13,7 @@ const MyFridgesList: React.FC<MyFridgesListProps> = ({ }) => {
     <div>
       <Grid container spacing={1}>
         {data?.getMyFridges.map(fridge => (
-          <Grid item sm={3} key={fridge._id}>
+          <Grid item xs={12} sm={6} md={4} lg={3} key={fridge._id}>
             <MyFridgesItem title={fridge.name} id={fridge._id as string} imageUrl={fridge.imageUrl} />
           </Grid>
         ))}

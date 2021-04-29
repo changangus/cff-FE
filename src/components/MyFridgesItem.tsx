@@ -13,7 +13,12 @@ const MyFridgesItem: React.FC<MyFridgesItemProps> = ({ title, id, imageUrl }) =>
     <Box display="flex" flexDirection="column" alignItems="center">
       <Paper elevation={3}>
         <Box display="flex" justifyContent="center">
-          <Typography variant="h6">{title}</Typography>
+          <Typography variant="h6" 
+            style={{
+              overflow: "hidden", 
+              textOverflow: "ellipsis",
+              height: "40px",
+              }}>{title}</Typography>
         </Box>
         <Box display="flex" justifyContent="center" mb={3}>
           <img
