@@ -5,7 +5,7 @@ import { SSRExchange } from "next-urql";
 import { typedUpdateQuery } from './typedUpdateQuery';
 
 export const createUrqlClient = (ssrExchange: SSRExchange) => ({ 
-  url: process.env.API_URL,
+  url: process.env.API_URL as string,
   fetchOptions: {
     credentials: 'include' as const
   },
