@@ -5,7 +5,7 @@ import { SSRExchange } from "next-urql";
 import { typedUpdateQuery } from './typedUpdateQuery';
 
 export const createUrqlClient = (ssrExchange: SSRExchange) => ({ 
-  url: 'http://localhost:4000/graphql',
+  url: 'https://community-fridge-finder.herokuapp.com/',
   fetchOptions: {
     credentials: 'include' as const
   },
