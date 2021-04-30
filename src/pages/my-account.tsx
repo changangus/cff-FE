@@ -4,13 +4,9 @@ import AlertDialog from '../components/DeleteAccountAlertDialog';
 import EditProfileDialog from '../components/EditProfileDialog';
 import MyFridgesItem from '../components/MyFridgesItem';
 import MyFridgesList from '../components/MyFridgesList';
-import { useGetMyFridgesQuery, useMeQuery } from '../generated/graphql';
+import { useMeQuery } from '../generated/graphql';
 
-interface MyAccountProps {
-
-}
-
-const MyAccount: React.FC<MyAccountProps> = ({}) => {
+const MyAccount: React.FC = ({}) => {
   const [{data, fetching}, me] = useMeQuery();
 
   return (
