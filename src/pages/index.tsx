@@ -7,7 +7,6 @@ import MapContainer from '../components/MapContainer'
 import { createUrqlClient } from '../utils/createUrqlClient'
 
 function Home() {
-  console.log(process.env.API_URL);
   return (
     <div>
       <Head>
@@ -15,6 +14,7 @@ function Home() {
         <link rel="preconnect" href="https://fonts.gstatic.com" />
         <link href="https://fonts.googleapis.com/css2?family=Quicksand&display=swap" rel="stylesheet" />
         <script src={`https://maps.googleapis.com/maps/api/js?key=AIzaSyCPE7ZHqAs4y-DGcd0YN8JaUPJ_XnFStrE&libraries=places`}></script>
+        <meta name="image" property="og:image" content="https://live.staticflickr.com/65535/51146552362_1dbffd0d32_c.jpg" />
       </Head>
       <MapContainer />
     </div>

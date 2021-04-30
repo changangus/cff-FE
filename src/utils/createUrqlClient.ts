@@ -5,10 +5,10 @@ import { SSRExchange } from "next-urql";
 import { typedUpdateQuery } from './typedUpdateQuery';
 
 export const createUrqlClient = (ssrExchange: SSRExchange) => ({ 
-  url: process.env.API_URL as string || 'localhost:4000/graphql',
-  // fetchOptions: {
-  //   credentials: 'include' as const
-  // },
+  url: process.env.API_URL || 'http://localhost:4000/graphql',
+  fetchOptions: {
+    credentials: 'include' as const
+  },
   exchanges: [dedupExchange, cacheExchange({
     updates: {
       Mutation: {
