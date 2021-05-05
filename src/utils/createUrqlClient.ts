@@ -6,9 +6,9 @@ import { typedUpdateQuery } from './typedUpdateQuery';
 
 export const createUrqlClient = (ssrExchange: SSRExchange) => ({ 
   url: process.env.API_URL || 'http://localhost:4000/graphql',
-  // fetchOptions: {
-  //   credentials: 'include' as const
-  // },
+  fetchOptions: {
+    credentials: 'include' as const
+  },
   exchanges: [dedupExchange, cacheExchange({
     updates: {
       Mutation: {
