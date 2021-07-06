@@ -65,12 +65,20 @@ export default function Navbar() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
+      {!data?.me ? 
+      <MenuItem>
+        <LoginDialog/>
+      </MenuItem>
+      :
+      <> 
       <MenuItem onClick={handleMenuClose}>
         <NextLink href='/my-account'>
           <Typography>My account</Typography>
         </NextLink>
       </MenuItem>
       <MenuItem onClick={handleLogout}>Logout</MenuItem>
+      </> }
+        
     </Menu>
   );
 
